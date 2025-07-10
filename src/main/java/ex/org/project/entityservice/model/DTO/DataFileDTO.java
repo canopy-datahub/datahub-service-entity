@@ -1,0 +1,18 @@
+package ex.org.project.entityservice.model.DTO;
+
+public record DataFileDTO(
+    String sourceFileName,
+    String normalizedFileName,
+    Integer dictionaryFileId,
+    Integer metadataFileId,
+    String fileFormat,
+    Long fileSize,
+    String category,
+    Integer totalVariables,
+    Integer sampleSize,
+    String dataVariables,
+    Integer metadataFileSize,
+    String metadataFileName,
+    Integer dictionaryFileSize,
+    Integer versionNumber
+){}
