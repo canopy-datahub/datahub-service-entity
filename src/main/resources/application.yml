@@ -56,7 +56,7 @@ ras:
 
 spring:
   config:
-    import: aws-secretsmanager:application_dev
+    # import: aws-secretsmanager:application_dev
     activate:
       on-profile: dev
   jpa:
