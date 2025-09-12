@@ -12,7 +12,9 @@ import ex.org.project.entityservice.mapper.*;
 import ex.org.project.entityservice.model.*;
 import ex.org.project.entityservice.model.DTO.*;
 import ex.org.project.entityservice.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Limit;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -32,10 +34,13 @@ public class ResourcesService {
     private final NewsMapper newsMapper;
     private final FundingMapper fundingMapper;
     private final StudyMapper studyMapper;
-    private final DccStatsMapper statsMapper;
+    private final CenterStatsMapper statsMapper;
     private final HomepageContentMapper homepageContentMapper;
     private final NewsletterRepository newsletterRepository;
     private final NewsletterMapper newsletterMapper;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public List<EventDTO> getEvents() {
         List<Event> events = eventRepository.findEventsByEventDateAfterOrderByEventDateAsc(LocalDateTime.now().truncatedTo(ChronoUnit.DAYS), Limit.of(3));
@@ -57,7 +62,7 @@ public class ResourcesService {
         return combinedEvents;
     }
 
-    public List<NewsDTO> getNews() {    	
+    public List<NewsDTO> getNews() {
         List<News> news = newsRepository.findByType_NameOrderByStartDateDesc(NEWS_GENERAL);
         List<NewsDTO> generalNews = newsMapper.newsToHomepageDTOs(news);
         return generalNews;
@@ -99,11 +104,11 @@ public class ResourcesService {
         return studyMapper.toStudyDTOs(studyRepository.findByIdIn(studyList));
     }
 
-    public HomepageStatsDTO getAllDccStats() {
-        List<Map<String, Object>> dataFileDTOs = dataFileRepository.getDccStats();
+    public HomepageStatsDTO getAllCenterStats() {
+        List<Map<String, Object>> dataFileDTOs = dataFileRepository.getCenterStats();
         HomepageStatsDTO stats = new HomepageStatsDTO();
-        List<DccDTO> dtos = statsMapper.mapToDccDtoList(dataFileDTOs);
-        Long totalStudies = dtos.stream().mapToLong(DccDTO::getStudyCount).sum();
+        List<CenterDTO> dtos = statsMapper.mapToCenterDtoList(dataFileDTOs);
+        Long totalStudies = dtos.stream().mapToLong(CenterDTO::getStudyCount).sum();
         Long totalFiles = dtos.stream().mapToLong(dccDTO -> dccDTO.getDataFileCount().longValue()).sum();
         stats.setTotalStudies(totalStudies);
         stats.setTotalFiles(totalFiles);

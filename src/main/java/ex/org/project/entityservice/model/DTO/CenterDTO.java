@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class DccDTO {
+public class CenterDTO {
 
     private String name;
     private Long studyCount;

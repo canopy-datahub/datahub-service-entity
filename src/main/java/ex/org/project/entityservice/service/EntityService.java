@@ -171,6 +171,7 @@ public class EntityService {
         List<Integer> codelistIds = properties.stream().map(EntityProperty::getCodeListId).toList();
         List<LkupPropertyCodelistValue> codelistValues = codelistValueRepository.findAllByPropertyCodelist_IdIn(
             codelistIds);
+
         Map<String, List<String>> codelist = codelistValues.stream()
                                                            .collect(groupingBy(
                                                                LkupPropertyCodelistValue::getPropertyCodelist,

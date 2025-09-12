@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "lkup_dcc")
+@Table(name = "lkup_center")
 @Data
-public class LookupDcc {
+public class LookupCenter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

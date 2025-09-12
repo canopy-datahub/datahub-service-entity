@@ -1,6 +1,6 @@
 package ex.org.project.entityservice.mapper;
 
-import ex.org.project.entityservice.model.DTO.DccDTO;
+import ex.org.project.entityservice.model.DTO.CenterDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper(componentModel = "spring")
-public interface DccStatsMapper {
-    DccStatsMapper INSTANCE = Mappers.getMapper(DccStatsMapper.class);
+public interface CenterStatsMapper {
+    CenterStatsMapper INSTANCE = Mappers.getMapper(CenterStatsMapper.class);
 
     @Mapping(target = "name", source = "name", qualifiedByName = "stringMapper")
     @Mapping(target = "studyCount", source = "study_count", qualifiedByName = "longMapper")
     @Mapping(target = "totalFileSize", source = "total_file_size", qualifiedByName = "bigDecimalMapper")
     @Mapping(target = "dataFileCount", source = "data_file_count", qualifiedByName = "bigDecimalMapper")
     @Mapping(target = "documentCount", source = "document_count", qualifiedByName = "bigDecimalMapper")
-    DccDTO mapToDccDto(Map<String, Object> map);
+    CenterDTO mapToCenterDto(Map<String, Object> map);
 
-    List<DccDTO> mapToDccDtoList(List<Map<String, Object>> maps);
+    List<CenterDTO> mapToCenterDtoList(List<Map<String, Object>> maps);
 
     @Named("stringMapper")
     public static String mapString(Object value){

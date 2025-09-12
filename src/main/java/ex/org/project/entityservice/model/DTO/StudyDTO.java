@@ -17,11 +17,11 @@ public class StudyDTO {
     private String publicKeyUrl;
     private String fileName;
     private String fileUrl;
-    private String dccAdminUuid;
+    private String centerAdminUuid;
     private Date createdAt;
     private Integer createdBy;
     private Date modifiedAt;
     private Integer modifiedBy;
-    private Integer dccId;
+    private Integer centerId;
 
 }

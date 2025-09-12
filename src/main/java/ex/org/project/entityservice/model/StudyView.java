@@ -23,9 +23,9 @@ public class StudyView {
     @Column(name = "phs")
     private String phsNumber;
 
-    @Column(name = "dcc")
-    private String dcc;
-  
+    @Column(name = "center")
+    private String center;
+
     @Column(name = "created_at")
     private Timestamp createDate;
 

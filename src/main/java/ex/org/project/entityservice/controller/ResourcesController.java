@@ -36,7 +36,7 @@ public class ResourcesController {
 		List<NewsDTO> returnedNews = resourcesService.getNews();
 		return new ResponseEntity<>(returnedNews, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getAllNews")
 	public ResponseEntity<List<NewsDTO>> getAllNews() {
 		List<NewsDTO> returnedNews = resourcesService.getAllNews();
@@ -55,22 +55,22 @@ public class ResourcesController {
 		List<FundingDTO> currentFundings = resourcesService.getFunding();
 		return new ResponseEntity<>(currentFundings, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getAllFunding")
 	public ResponseEntity<List<FundingDTO>> getAllFunding(){
 		List<FundingDTO> allFundings = resourcesService.getAllFunding();
 		return new ResponseEntity<>(allFundings, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getRecentlyApprovedStudies")
 	public ResponseEntity<List<StudyViewDTO>> getRecentlyApprovedStudies() {
 		List<StudyViewDTO> recentlyApprovedStudies = resourcesService.getRecentlyApprovedStudies();
 		return new ResponseEntity<>(recentlyApprovedStudies, HttpStatus.OK);
 	}
 
-	@GetMapping("/getDccStats")
-	public ResponseEntity<HomepageStatsDTO> getDccStats(){
-		return new ResponseEntity<>(resourcesService.getAllDccStats(), HttpStatus.OK);
+	@GetMapping("/getCenterStats")
+	public ResponseEntity<HomepageStatsDTO> getCenterStats(){
+		return new ResponseEntity<>(resourcesService.getAllCenterStats(), HttpStatus.OK);
 	}
 
 	@GetMapping("/getHomepageContent")

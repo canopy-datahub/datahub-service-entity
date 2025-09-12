@@ -28,8 +28,8 @@ public class Study {
     @Column(name = "file_url")
     private String fileUrl;
 
-    @Column(name = "dcc_admin_uuid")
-    private String dccAdminUuid;
+    @Column(name = "center_admin_uuid")
+    private String centerAdminUuid;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -44,7 +44,7 @@ public class Study {
     private Integer modifiedBy;
 
     @ManyToOne
-    @JoinColumn(name = "dcc_id")
-    private LookupDcc dccId;
+    @JoinColumn(name = "center_id")
+    private LookupCenter centerId;
 
 }

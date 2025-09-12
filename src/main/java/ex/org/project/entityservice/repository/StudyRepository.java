@@ -15,13 +15,13 @@ public interface StudyRepository extends JpaRepository<StudyView, Integer> {
     List<StudyView> findByIdIn(List<Integer> studyIds);
 
     @Query(nativeQuery = true,
-            value = "SELECT vs.study_id, vs.title, vs.dcc, vs.created_at, vs.release_date,vs.description, vs.phs, vs.status FROM public.view_study vs " +
+            value = "SELECT vs.study_id, vs.title, vs.center, vs.created_at, vs.release_date,vs.description, vs.phs, vs.status FROM public.view_study vs " +
                     "WHERE vs.status='Approved' AND to_timestamp(vs.release_date,'MM/DD/YYYY') >:timePeriod " +
                     "ORDER BY to_timestamp(vs.release_date,'MM/DD/YYYY') DESC ")
     List <StudyView> findRecentlyApprovedStudies(LocalDateTime timePeriod);
 
     @Query(nativeQuery = true,
-            value = "SELECT vs.study_id, vs.title, vs.dcc, vs.created_at, vs.release_date, " +
+            value = "SELECT vs.study_id, vs.title, vs.center, vs.created_at, vs.release_date, " +
                     "vs.description, vs.phs, vs.status FROM public.view_study vs " +
                     "WHERE vs.status = 'Approved' " +
                     "ORDER BY to_timestamp(vs.release_date,'MM/DD/YYYY') DESC FETCH FIRST 3 ROWS ONLY ")

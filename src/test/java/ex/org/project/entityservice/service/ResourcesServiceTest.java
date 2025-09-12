@@ -57,7 +57,7 @@ public class ResourcesServiceTest {
     public void setup(){
         EventMapper eventMapper = Mappers.getMapper(EventMapper.class);
         NewsMapper newsMapper = Mappers.getMapper(NewsMapper.class);
-        DccStatsMapper statsMapper = Mappers.getMapper(DccStatsMapper.class);
+        CenterStatsMapper statsMapper = Mappers.getMapper(CenterStatsMapper.class);
         HomepageContentMapper contentMapper = Mappers.getMapper(HomepageContentMapper.class);
         FundingMapper fundingMapper = Mappers.getMapper(FundingMapper.class);
         StudyMapper studyMapper = Mappers.getMapper(StudyMapper.class);
@@ -255,21 +255,21 @@ public class ResourcesServiceTest {
 
 
     @Test
-    void testGetAllDccStats(){
-        when(dataFileRepository.getDccStats()).thenReturn(getListForDccStatsTest());
+    void testGetAllCenterStats(){
+        when(dataFileRepository.getCenterStats()).thenReturn(getListForCenterStatsTest());
 
-        HomepageStatsDTO dto = service.getAllDccStats();
+        HomepageStatsDTO dto = service.getAllCenterStats();
         Assertions.assertEquals(5, dto.getTotalFiles().intValue());
         Assertions.assertEquals(3, dto.getTotalStudies().intValue());
-        DccDTO dcc = dto.getDtos().get(0);
-        Assertions.assertEquals("testName", dcc.getName());
-        Assertions.assertEquals(3, dcc.getStudyCount());
-        Assertions.assertEquals(4, dcc.getDocumentCount().longValue());
-        Assertions.assertEquals(5, dcc.getDataFileCount().longValue());
-        Assertions.assertEquals(6, dcc.getTotalFileSize().intValue());
+        CenterDTO center = dto.getDtos().get(0);
+        Assertions.assertEquals("testName", center.getName());
+        Assertions.assertEquals(3, center.getStudyCount());
+        Assertions.assertEquals(4, center.getDocumentCount().longValue());
+        Assertions.assertEquals(5, center.getDataFileCount().longValue());
+        Assertions.assertEquals(6, center.getTotalFileSize().intValue());
     }
 
-    private List<Map<String, Object>> getListForDccStatsTest(){
+    private List<Map<String, Object>> getListForCenterStatsTest(){
         Map<String, Object> map = new HashMap<>();
         map.put("name", "testName");
         map.put("study_count", 3L);
@@ -301,19 +301,19 @@ public class ResourcesServiceTest {
 
         Assertions.assertEquals("Jan 16, 2023", newFile.getDate());
         Assertions.assertEquals(1, newFile.getFiles());
-        Assertions.assertEquals("newFileDcc", newFile.getDcc());
+        Assertions.assertEquals("newFileDcc", newFile.getCenter());
         Assertions.assertEquals(2, newFile.getStudyId());
         Assertions.assertEquals("newFileStudyName", newFile.getStudyName());
 
         Assertions.assertEquals("Jan 17, 2023", updatedFile.getDate());
         Assertions.assertEquals(3, updatedFile.getFiles());
-        Assertions.assertEquals("updatedFileDcc", updatedFile.getDcc());
+        Assertions.assertEquals("updatedFileDcc", updatedFile.getCenter());
         Assertions.assertEquals(4, updatedFile.getStudyId());
         Assertions.assertEquals("updatedFileStudyName", updatedFile.getStudyName());
 
         Assertions.assertEquals("Jan 18, 2023", newStudy.getDate());
         Assertions.assertNull(newStudy.getFiles());
-        Assertions.assertEquals("newStudyDcc", newStudy.getDcc());
+        Assertions.assertEquals("newStudyDcc", newStudy.getCenter());
         Assertions.assertEquals(5, newStudy.getStudyId());
         Assertions.assertEquals("newStudyName", newStudy.getStudyName());
     }
@@ -345,7 +345,7 @@ public class ResourcesServiceTest {
     private List<StudyView> getNewStudyList(){
         List<StudyView> newFileList = new ArrayList<>();
         StudyView newFileMap = new StudyView();
-        newFileMap.setDcc("newStudyDcc");
+        newFileMap.setCenter("newStudyDcc");
         newFileMap.setId(5);
         newFileMap.setName("newStudyName");
         newFileMap.setReleaseDate("01/18/2023");

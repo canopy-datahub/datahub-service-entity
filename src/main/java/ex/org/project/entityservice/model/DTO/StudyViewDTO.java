@@ -8,5 +8,5 @@ public class StudyViewDTO {
     private String name;
     private String description;
     private String phsNumber;
-    private String dcc;
+    private String center;
 }

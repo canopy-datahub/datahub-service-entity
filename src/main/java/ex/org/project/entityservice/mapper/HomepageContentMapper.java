@@ -19,14 +19,14 @@ public interface HomepageContentMapper {
 
     @Mapping(target = "files", source = "files", qualifiedByName = "longMapper")
     @Mapping(target = "studyId", source = "study_id", qualifiedByName = "integerMapper")
-    @Mapping(target = "dcc", source = "dcc", qualifiedByName = "stringMapper")
+    @Mapping(target = "center", source = "center", qualifiedByName = "stringMapper")
     @Mapping(target = "studyName", source = "title", qualifiedByName = "stringMapper")
     @Mapping(target = "date", source = "date", qualifiedByName = "dateMapper")
     HomepageContentDataDTO mapToDataDto(Map<String, Object> map);
 
 
     @Mapping(target = "studyId", source = "studyView.id")
-    @Mapping(target = "dcc", source = "studyView.dcc")
+    @Mapping(target = "center", source = "studyView.center")
     @Mapping(target = "studyName", source = "studyView.name")
     @Mapping(target = "date", source = "studyView.releaseDate",qualifiedByName = "dateMapper")
     HomepageContentDataDTO mapToDataDto(StudyView studyView);
