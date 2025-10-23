@@ -1,11 +1,10 @@
 package ex.org.project.entityservice.repository;
 
-import java.util.List;
-
+import ex.org.project.entityservice.model.StudyDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ex.org.project.entityservice.model.StudyDocument;
+import java.util.List;
 
 
 @Repository

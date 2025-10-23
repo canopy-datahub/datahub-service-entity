@@ -1,24 +1,28 @@
 package ex.org.project.entityservice.service;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import ex.org.project.entityservice.auth.UserAuthService;
-import ex.org.project.entityservice.auth.UserAuthorizationException;
-import ex.org.project.entityservice.auth.UserNotFoundException;
+import ex.org.project.datahub.auth.core.FileAuthorizationService;
+import ex.org.project.datahub.auth.exception.UserAuthorizationException;
+import ex.org.project.datahub.auth.exception.UserNotFoundException;
 import ex.org.project.entityservice.exception.ResourceNotFoundException;
 import ex.org.project.entityservice.exception.custom.StatusNotFoundException;
 import ex.org.project.entityservice.exception.custom.StudyNotFoundException;
-import ex.org.project.entityservice.mapper.*;
-import ex.org.project.entityservice.model.*;
+import ex.org.project.entityservice.mapper.DataFileMapper;
+import ex.org.project.entityservice.mapper.EntityDTOMapper;
+import ex.org.project.entityservice.mapper.EntityPropertyMapper;
+import ex.org.project.entityservice.mapper.StudyDocumentMapper;
 import ex.org.project.entityservice.model.DTO.*;
+import ex.org.project.entityservice.model.*;
 import ex.org.project.entityservice.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static ex.org.project.entityservice.util.Constants.*;
-
-import lombok.RequiredArgsConstructor;
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -48,7 +52,7 @@ public class EntityService {
 
     private final EntityPropertyMapper entityPropertyMapper;
 
-    private final UserAuthService userAuthService;
+    private final FileAuthorizationService fileAuthorizationService;
 
     private final PropertyValueService propertyValueService;
 
@@ -126,9 +130,9 @@ public class EntityService {
             studyId, CATEGORY_DATA, STATUS_APPROVED);
         files.forEach(this::checkIfSasAvailable);
         DatasetDTO datasetDTO = new DatasetDTO();
-        //userAuthService.checkStudyAuthorization checks is user has been granted access to the study
+        //fileAuthorizationService.checkStudyAuthorization checks if user has been granted access to the study
         try {
-            datasetDTO.setUserHasStudyAccess(userAuthService.checkStudyAuthorization(userId, studyId));
+            datasetDTO.setUserHasStudyAccess(fileAuthorizationService.checkStudyAuthorization(userId, studyId));
             //if a UserAuthorizationException is thrown, user does not have valid authorizations for study.
         }
         catch(UserAuthorizationException | UserNotFoundException e) {

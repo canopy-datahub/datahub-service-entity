@@ -1,9 +1,9 @@
 package ex.org.project.entityservice.model.DTO;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.util.List;
-
-import lombok.Data;
 
 @Data
 public class NewsDTO {

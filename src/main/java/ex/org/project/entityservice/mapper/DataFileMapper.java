@@ -1,14 +1,13 @@
 package ex.org.project.entityservice.mapper;
 
-import java.util.List;
-
+import ex.org.project.entityservice.model.DTO.DataFileDTO;
+import ex.org.project.entityservice.model.DataFile;
 import org.apache.commons.io.FilenameUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import ex.org.project.entityservice.model.DataFile;
-import ex.org.project.entityservice.model.DTO.DataFileDTO;
+import java.util.List;
 
 @Mapper(componentModel="spring")
 public interface DataFileMapper {

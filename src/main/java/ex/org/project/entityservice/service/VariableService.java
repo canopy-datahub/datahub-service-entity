@@ -1,23 +1,22 @@
 package ex.org.project.entityservice.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import ex.org.project.entityservice.mapper.StudyMapper;
 import ex.org.project.entityservice.mapper.VariablesMapper;
+import ex.org.project.entityservice.model.DTO.PermissibleValueDTO;
+import ex.org.project.entityservice.model.DTO.StudyViewDTO;
+import ex.org.project.entityservice.model.DTO.VariableDTO;
 import ex.org.project.entityservice.model.StudyVariable;
 import ex.org.project.entityservice.model.StudyView;
 import ex.org.project.entityservice.model.Variable;
 import ex.org.project.entityservice.model.VariablePermissibleValue;
-import ex.org.project.entityservice.model.DTO.PermissibleValueDTO;
-import ex.org.project.entityservice.model.DTO.StudyViewDTO;
-import ex.org.project.entityservice.model.DTO.VariableDTO;
 import ex.org.project.entityservice.repository.StudyEntityRepository;
 import ex.org.project.entityservice.repository.StudyRepository;
 import ex.org.project.entityservice.repository.VariablePermissibleValueRepository;
 import ex.org.project.entityservice.repository.VariableRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +49,7 @@ public class VariableService {
         List<Variable> variables = variableRepository.findAll();
         return variables.stream().map(VariableDTO::new).toList();
     }
-    
+
     public List<VariableDTO> getVariables(Integer studyId) {
         List<StudyVariable> variables = studyEntityRepository.findAllVariablesByStudyId(studyId);
         return variables.stream().map(VariableDTO::new).toList();

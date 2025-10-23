@@ -3,7 +3,6 @@ package ex.org.project.entityservice.mapper;
 import ex.org.project.entityservice.model.DTO.StudyEntityDTO;
 import ex.org.project.entityservice.model.StudyPropertyValue;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 

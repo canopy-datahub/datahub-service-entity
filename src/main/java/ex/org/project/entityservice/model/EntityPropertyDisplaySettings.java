@@ -1,7 +1,8 @@
 package ex.org.project.entityservice.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 @Entity

@@ -1,9 +1,9 @@
 package ex.org.project.entityservice.exception;
 
 
-import ex.org.project.entityservice.auth.UserAuthenticationException;
-import ex.org.project.entityservice.auth.UserAuthorizationException;
-import ex.org.project.entityservice.auth.UserNotFoundException;
+import ex.org.project.datahub.auth.exception.UserAuthenticationException;
+import ex.org.project.datahub.auth.exception.UserAuthorizationException;
+import ex.org.project.datahub.auth.exception.UserNotFoundException;
 import ex.org.project.entityservice.exception.custom.StatusNotFoundException;
 import ex.org.project.entityservice.exception.custom.StudyNotFoundException;
 import lombok.extern.slf4j.Slf4j;

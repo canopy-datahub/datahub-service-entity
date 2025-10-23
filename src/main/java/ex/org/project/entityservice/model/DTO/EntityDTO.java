@@ -1,7 +1,7 @@
 
 package ex.org.project.entityservice.model.DTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data

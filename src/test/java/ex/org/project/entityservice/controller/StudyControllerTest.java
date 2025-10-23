@@ -1,25 +1,11 @@
 package ex.org.project.entityservice.controller;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import ex.org.project.entityservice.auth.AccessRole;
-import ex.org.project.entityservice.auth.UserAuthService;
-import ex.org.project.entityservice.auth.UserAuthorizationException;
+import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
+import ex.org.project.datahub.auth.exception.UserAuthorizationException;
+import ex.org.project.datahub.auth.model.AccessRole;
 import ex.org.project.entityservice.exception.custom.StudyNotFoundException;
 import ex.org.project.entityservice.model.DTO.*;
-import ex.org.project.entityservice.model.LkupStatus;
-import ex.org.project.entityservice.repository.LkupStatusRepository;
-import ex.org.project.entityservice.service.PropertyValueService;
-import org.junit.jupiter.api.BeforeEach;
+import ex.org.project.entityservice.service.EntityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,8 +13,18 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
 
-import ex.org.project.entityservice.service.EntityService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class StudyControllerTest {
@@ -37,7 +33,7 @@ class StudyControllerTest {
     private EntityService entityService;
 
     @Mock
-    private UserAuthService authService;
+    private KeycloakAuthenticationService authenticationService;
 
     @InjectMocks
     private StudyController studyController;
@@ -45,13 +41,13 @@ class StudyControllerTest {
     @Test
     void testGetStudy() {
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         StudyOverviewDTO studyOverviewDTO = new StudyOverviewDTO();
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
+        // Mock the entityService.isApprovedStudy() method
+        when(entityService.isApprovedStudy(studyId)).thenReturn(true);
         when(entityService.getStudyOverview(1)).thenReturn(studyOverviewDTO);
-        ResponseEntity<StudyOverviewDTO> result = studyController.getStudy(sessionId, studyId);
+        ResponseEntity<StudyOverviewDTO> result = studyController.getStudy(jwt, studyId);
 
         assertEquals(studyOverviewDTO, result.getBody());
     }
@@ -59,34 +55,33 @@ class StudyControllerTest {
     @Test
     void testGetStudyUnauthorized() {
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
+        // Mock the entityService.isApprovedStudy() method to return false (unapproved study)
         when(entityService.isApprovedStudy(studyId)).thenReturn(false);
-        when(authService.checkAuth(eq(sessionId), eq(List.of(AccessRole.DATA_CURATOR)))).thenThrow(
+        when(authenticationService.checkAuth(eq(jwt), eq(List.of(AccessRole.DATA_CURATOR)))).thenThrow(
             new UserAuthorizationException("User does not have the necessary role for access"));
         // Assert that the UserAuthorizationException is thrown when user is unauthorized to access study
-        assertThrows(UserAuthorizationException.class, () -> studyController.getStudy(sessionId, studyId));
+        assertThrows(UserAuthorizationException.class, () -> studyController.getStudy(jwt, studyId));
 
     }
 
     @Test
     void testGetStudyWithNullStudyId() {
         Integer studyId = null;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
+        // Mock the entityService.getStudyOverview() method
         when(entityService.getStudyOverview(null)).thenThrow(
             new StudyNotFoundException("No study found with ID: " + studyId));
 
-        assertThrows(StudyNotFoundException.class, () -> studyController.getStudy(sessionId, studyId));
+        assertThrows(StudyNotFoundException.class, () -> studyController.getStudy(jwt, studyId));
     }
 
     @Test
     void testGetStudyWithValidStudyIdAndValidStudyProperty() {
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         StudyOverviewDTO expected = new StudyOverviewDTO();
         Map<String, List<PropertyValueDTO>> props = new HashMap<>();
         PropertyValueDTO studyProp1 = new PropertyValueDTO(List.of("phs001234"), "dbGaP Study Accession", 1);
@@ -94,9 +89,9 @@ class StudyControllerTest {
         expected.setProps(props);
 
         // Call the getStudy() method
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
+        when(entityService.isApprovedStudy(studyId)).thenReturn(true);
         when(entityService.getStudyOverview(studyId)).thenReturn(expected);
-        ResponseEntity<StudyOverviewDTO> result = studyController.getStudy(sessionId, studyId);
+        ResponseEntity<StudyOverviewDTO> result = studyController.getStudy(jwt, studyId);
         assertEquals(expected, result.getBody());
 
     }
@@ -105,12 +100,12 @@ class StudyControllerTest {
     void testGetDocuments() {
         // Mock data
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         List<StudyDocumentEntityDTO> mockDocuments = new ArrayList<>();
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
+        when(entityService.isApprovedStudy(studyId)).thenReturn(true);
         when(entityService.getStudyDocuments(studyId)).thenReturn(mockDocuments);
 
-        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(sessionId, studyId);
+        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(jwt, studyId);
         assertEquals(mockDocuments, result.getBody());
     }
 
@@ -118,11 +113,11 @@ class StudyControllerTest {
     void testGetDocumentsShouldReturnEmptyListWhenNoDocumentsFound() {
         // Mock data
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         List<StudyDocumentEntityDTO> emptyList = new ArrayList<>();
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
+        when(entityService.isApprovedStudy(studyId)).thenReturn(true);
         when(entityService.getStudyDocuments(studyId)).thenReturn(new ArrayList<>());
-        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(sessionId, studyId);
+        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(jwt, studyId);
 
         // Assert that the result is an empty list
         assertEquals(emptyList, result.getBody());
@@ -130,11 +125,9 @@ class StudyControllerTest {
 
     @Test
     void testGetDocumentsShouldReturnEmptyListWhenStudyIdIsNull() {
-        Boolean accessGranted = true;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         List<StudyDocumentEntityDTO> emptyList = new ArrayList<>();
-        when(authService.checkAuth(eq(sessionId), any())).thenReturn(any());
-        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(sessionId, null);
+        ResponseEntity<List<StudyDocumentEntityDTO>> result = studyController.getDocuments(jwt, null);
 
         // Assert that the result is an empty list
         assertEquals(emptyList, result.getBody());
@@ -152,7 +145,7 @@ class StudyControllerTest {
                                                0, "metadatafileName", 0, 1
         );
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         Integer userId = 1;
         List<DataFileDTO> mockDatasets = new ArrayList<>();
         DatasetDTO datasetDTO = new DatasetDTO();
@@ -161,9 +154,9 @@ class StudyControllerTest {
         datasetDTO.setDataFileDTOS(mockDatasets);
         datasetDTO.setUserHasStudyAccess(true);
         when(entityService.isApprovedStudy(studyId)).thenReturn(true);
-        when(entityService.getDatasets(userId, studyId)).thenReturn(datasetDTO);
-        when(authService.checkAuth(eq(sessionId))).thenReturn(userId);
-        ResponseEntity<DatasetDTO> response = studyController.getDatasets(sessionId, studyId);
+        when(entityService.getDatasets(studyId, userId)).thenReturn(datasetDTO);
+        when(authenticationService.checkAuth(eq(jwt))).thenReturn(userId);
+        ResponseEntity<DatasetDTO> response = studyController.getDatasets(jwt, studyId);
 
         assertEquals(datasetDTO, response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -174,16 +167,16 @@ class StudyControllerTest {
 
         // Mock data
         Integer studyId = 1;
-        String sessionId = "session123";
+        Jwt jwt = mock(Jwt.class);
         Integer userId = 1;
         List<DataFileDTO> mockDatasets = new ArrayList<>();
         DatasetDTO datasetDTO = new DatasetDTO();
         datasetDTO.setDataFileDTOS(mockDatasets);
-        when(authService.checkAuth(eq(sessionId))).thenReturn(userId);
+        when(authenticationService.checkAuth(eq(jwt))).thenReturn(userId);
         when(entityService.isApprovedStudy(studyId)).thenReturn(true);
-        when(entityService.getDatasets(eq(userId), eq(studyId))).thenReturn(datasetDTO);
+        when(entityService.getDatasets(eq(studyId), eq(userId))).thenReturn(datasetDTO);
 
-        ResponseEntity<DatasetDTO> response = studyController.getDatasets(sessionId, studyId);
+        ResponseEntity<DatasetDTO> response = studyController.getDatasets(jwt, studyId);
         assertEquals(datasetDTO.toString(), response.getBody().toString());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

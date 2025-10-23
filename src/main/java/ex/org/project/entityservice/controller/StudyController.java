@@ -1,16 +1,26 @@
 package ex.org.project.entityservice.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import ex.org.project.entityservice.auth.*;
-import ex.org.project.entityservice.model.DTO.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
+import ex.org.project.datahub.auth.exception.UserAuthenticationException;
+import ex.org.project.datahub.auth.exception.UserNotFoundException;
+import ex.org.project.datahub.auth.model.AccessRole;
+import ex.org.project.entityservice.model.DTO.DatasetDTO;
+import ex.org.project.entityservice.model.DTO.EntityPropertyDTO;
+import ex.org.project.entityservice.model.DTO.StudyDocumentEntityDTO;
+import ex.org.project.entityservice.model.DTO.StudyOverviewDTO;
 import ex.org.project.entityservice.service.EntityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,16 +29,21 @@ public class StudyController {
 
     private final EntityService entityService;
 
-    private final UserAuthService authService;
+    private final KeycloakAuthenticationService authenticationService;
 
     @GetMapping("/getStudy")
     public ResponseEntity<StudyOverviewDTO> getStudy(
-        @CookieValue(value = "chocolateChip", required = false) String sessionId,
+        @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-            authService.checkAuth(sessionId, List.of(AccessRole.DATA_CURATOR));
+            // Unapproved studies require DATA_CURATOR role
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         // Calls the entityService to retrieve study properties
         StudyOverviewDTO study = entityService.getStudyOverview(studyId);
@@ -37,12 +52,17 @@ public class StudyController {
 
     @GetMapping("/getDocuments")
     public ResponseEntity<List<StudyDocumentEntityDTO>> getDocuments(
-        @CookieValue(value = "chocolateChip", required = false) String sessionId,
+        @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-            authService.checkAuth(sessionId, List.of(AccessRole.DATA_CURATOR));
+            // Unapproved studies require DATA_CURATOR role
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         List<StudyDocumentEntityDTO> displaySettingsMap = entityService.getStudyDocuments(studyId);
         return ResponseEntity.ok(displaySettingsMap);
@@ -50,22 +70,26 @@ public class StudyController {
 
     @GetMapping("/getDatasets")
     public ResponseEntity<DatasetDTO> getDatasets(
-        @CookieValue(value = "chocolateChip", required = false) String sessionId,
+        @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
 
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         //if study is not approved, only data curators should have access to datasets
         if(!isApprovedStudy) {
-            authService.checkAuth(sessionId, List.of(AccessRole.DATA_CURATOR));
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         try {
             //checks if the user is valid to access datasets
-            Integer userId = authService.checkAuth(sessionId);
+            Integer userId = authenticationService.checkAuth(jwt);
             return new ResponseEntity<>(entityService.getDatasets(studyId, userId), HttpStatus.OK);
         }
         catch(UserAuthenticationException | UserNotFoundException e) {
-            //If sessionId not provided or user does not have valid access to datasets, return approved datasets
+            //If JWT not provided or user does not have valid access to datasets, return approved datasets
             return new ResponseEntity<>(entityService.getDatasets(studyId), HttpStatus.OK);
         }
     }
