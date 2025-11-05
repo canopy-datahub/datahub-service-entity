@@ -4,17 +4,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(
-    proxyBeanMethods = false,
-    scanBasePackages = {
-        "ex.org.project.entityservice",         // Entity service components (including mappers)
-        "ex.org.project.datahub.auth"           // Keycloak library components  
-    }
-)
+@SpringBootApplication(proxyBeanMethods = false)
+@ComponentScan(basePackages = {
+    "ex.org.project.entityservice",
+    "ex.org.project.datahub.auth"
+})
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = {
     "ex.org.project.entityservice.repository",  // Entity service repositories
