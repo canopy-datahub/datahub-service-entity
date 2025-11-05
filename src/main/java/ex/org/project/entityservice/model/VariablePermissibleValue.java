@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name="variable_permissible_values")
+@Table(name="lkup_core_variable_permissible_value")
 public class VariablePermissibleValue {
 
     @Id
@@ -15,8 +15,8 @@ public class VariablePermissibleValue {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "variable_id")
-    private Integer variableId;
+    @Column(name = "variable_name")
+    private String variableName;
 
     @Column(name = "value")
     private Integer value;

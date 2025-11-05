@@ -29,7 +29,7 @@ public interface StudyRepository extends JpaRepository<StudyView, Integer> {
 
     @Query(nativeQuery = true,
             value = "select vs.* from view_study vs where study_id in (" +
-                    "select study_id from view_study_variables vsv where vsv.variable_id='1') " +
+                    "select study_id from view_variables vv where vv.variable_id= :variableId) " +
                     "and vs.status = 'Approved' order by vs.phs")
     List<StudyView> findAllByVariableId(Integer variableId);
 
