@@ -151,7 +151,7 @@ public class EntityService {
             studyId, CATEGORY_DATA, STATUS_APPROVED);
         files.forEach(this::checkIfSasAvailable);
         DatasetDTO datasetDTO = new DatasetDTO();
-        datasetDTO.setUserHasStudyAccess(false);
+        datasetDTO.setUserHasStudyAccess(true);
         datasetDTO.setDataFileDTOS(dataFileMapper.dataFileListToDtoList(files));
         return datasetDTO;
     }
