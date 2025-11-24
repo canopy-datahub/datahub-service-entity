@@ -20,9 +20,6 @@ public class StudyView {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "phs")
-    private String phsNumber;
-
     @Column(name = "center")
     private String center;
 

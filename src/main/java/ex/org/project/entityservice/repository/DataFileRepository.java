@@ -22,7 +22,7 @@ public interface DataFileRepository extends JpaRepository<DataFile, Integer> {
     List<DataFile> findAllByDataSubmission_StudyIdAndLookupDataFileCategory_CategoryGroupAndStatus_NameAndIsCurrentVersionTrue(Integer studyId, String categoryGroup, String status);
 
     @Query(value = "SELECT center as name, " +
-            "COUNT(DISTINCT study_phs) AS study_count, " +
+            "COUNT(DISTINCT study_id) AS study_count, " +
             "SUM(data_file_count) AS data_file_count, " +
             "SUM(total_file_count) - SUM(data_file_count) AS document_count, " +
             "TRUNC(SUM(COALESCE(total_file_size,0)),2) AS total_file_size " +
