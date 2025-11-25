@@ -1,12 +1,13 @@
 package ex.org.project.entityservice.repository;
 
-import ex.org.project.entityservice.model.StudyView;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import ex.org.project.entityservice.model.StudyView;
 
 @Repository
 public interface StudyRepository extends JpaRepository<StudyView, Integer> {

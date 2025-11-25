@@ -1,22 +1,23 @@
 package ex.org.project.entityservice.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import ex.org.project.entityservice.mapper.StudyMapper;
 import ex.org.project.entityservice.mapper.VariablesMapper;
-import ex.org.project.entityservice.model.DTO.PermissibleValueDTO;
-import ex.org.project.entityservice.model.DTO.StudyViewDTO;
-import ex.org.project.entityservice.model.DTO.VariableDTO;
 import ex.org.project.entityservice.model.StudyVariable;
 import ex.org.project.entityservice.model.StudyView;
 import ex.org.project.entityservice.model.Variable;
 import ex.org.project.entityservice.model.VariablePermissibleValue;
+import ex.org.project.entityservice.model.DTO.PermissibleValueDTO;
+import ex.org.project.entityservice.model.DTO.StudyViewDTO;
+import ex.org.project.entityservice.model.DTO.VariableDTO;
 import ex.org.project.entityservice.repository.StudyEntityRepository;
 import ex.org.project.entityservice.repository.StudyRepository;
 import ex.org.project.entityservice.repository.VariablePermissibleValueRepository;
 import ex.org.project.entityservice.repository.VariableRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +39,11 @@ public class VariableService {
         // Look up the variable name using the variable_id
         Variable variable = variableRepository.findById(variableId)
             .orElseThrow(() -> new RuntimeException("Variable not found with id: " + variableId));
-        
+
         // Use the variable name to search in permissibleValueRepository
         List<VariablePermissibleValue> permissibleValues = permissibleValueRepository
             .findByVariableNameOrderByValue(variable.getName());
-        
+
         return variableMapper.mapToDtoList(permissibleValues);
     }
 
