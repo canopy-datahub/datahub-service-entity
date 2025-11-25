@@ -2,13 +2,14 @@ package ex.org.project.entityservice.service;
 
 import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
 import ex.org.project.entityservice.exception.ResourceNotFoundException;
+import ex.org.project.datahub.auth.core.FileAuthorizationService;
 import ex.org.project.entityservice.mapper.*;
-
-import ex.org.project.entityservice.model.*;
-import ex.org.project.entityservice.model.DTO.PropertyValueDTO;
-import ex.org.project.entityservice.model.DTO.StudyDocumentEntityDTO;
-
 import ex.org.project.entityservice.model.DTO.PropsDTO;
+import ex.org.project.entityservice.model.DTO.StudyDocumentEntityDTO;
+import ex.org.project.entityservice.model.DataFile;
+import ex.org.project.entityservice.model.EntityPropertyDisplaySettings;
+import ex.org.project.entityservice.model.LkupStatus;
+import ex.org.project.entityservice.model.StudyView;
 import ex.org.project.entityservice.repository.*;
 import ex.org.project.entityservice.util.Constants;
 import org.junit.Assert;
@@ -17,13 +18,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -71,11 +73,11 @@ class EntityServiceTest {
     @Mock
     private StudyEntityRepository studyEntityRepository;
 
-    @InjectMocks
-    private EntityService entityService;
+    @Mock
+    private FileAuthorizationService fileAuthorizationService;
 
     @InjectMocks
-    private KeycloakAuthenticationService authenticationService;
+    private EntityService entityService;
 
     @BeforeEach
     public void setup() {
@@ -84,7 +86,7 @@ class EntityServiceTest {
         entityService = new EntityService(entityPropertyDisplaySettingsRepository, codelistValueRepository,
                                           propertySourceRepository, entityPropertyRepository, dataFileRepository,
                                           studyRepository, statusRepository, dataFileMapper, entityDTOMapper,
-                                          documentMapper, entityPropertyMapper, propertyValueService,
+                                          documentMapper, entityPropertyMapper, fileAuthorizationService, propertyValueService,
                                           studyEntityRepository
         );
     }

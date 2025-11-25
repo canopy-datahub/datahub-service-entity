@@ -1,17 +1,16 @@
 package ex.org.project.entityservice.mapper;
 
-import java.util.List;
-
+import ex.org.project.entityservice.model.DTO.StudyViewDTO;
+import ex.org.project.entityservice.model.StudyView;
 import org.mapstruct.Mapper;
 
-import ex.org.project.entityservice.model.StudyView;
-import ex.org.project.entityservice.model.DTO.StudyViewDTO;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface StudyMapper {
 
     StudyViewDTO toStudyDTO(StudyView study);
-    
+
     List<StudyViewDTO> toStudyDTOs(List<StudyView> studies);
 
 }

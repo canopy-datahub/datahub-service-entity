@@ -1,16 +1,17 @@
 package ex.org.project.entityservice.mapper;
 
+import ex.org.project.entityservice.model.DTO.NewsDTO;
+import ex.org.project.entityservice.model.News;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ex.org.project.entityservice.model.News;
-import ex.org.project.entityservice.model.DTO.NewsDTO;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface NewsMapper {
-	
+
 	// Homepage News Summary
 
 	@Named("homepageNews")
@@ -36,15 +37,15 @@ public interface NewsMapper {
 
     @IterableMapping(qualifiedByName = "allNews")
     List<NewsDTO> newsToAllNewsDTOs(List<News> news);
-    
+
     @Named("splitNewsDescription")
     static String splitNewsDescription(String sourceDescription){
-    	String[] result = sourceDescription.split("\\|\\|\\|");    	
+    	String[] result = sourceDescription.split("\\|\\|\\|");
         return result.length > 2 ? result[0] + result[1].trim() + "..." : result[0] + result[1].trim();
     }
-    
+
     // Individual news item page
-    
+
     @Mapping(source = "type.name", target = "type")
     @Mapping(source = "description", target = "description", qualifiedByName = "fixDescription")
     NewsDTO newsToNewsDTO(News news);

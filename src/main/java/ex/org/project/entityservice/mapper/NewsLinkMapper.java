@@ -1,9 +1,9 @@
 package ex.org.project.entityservice.mapper;
 
+import ex.org.project.entityservice.model.DTO.NewsLinkDTO;
+import ex.org.project.entityservice.model.NewsLink;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import ex.org.project.entityservice.model.NewsLink;
-import ex.org.project.entityservice.model.DTO.NewsLinkDTO;
 
 import java.util.List;
 

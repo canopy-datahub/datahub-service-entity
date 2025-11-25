@@ -1,7 +1,5 @@
 package ex.org.project.entityservice.config;
 
-import javax.sql.DataSource;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +8,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableConfigurationProperties

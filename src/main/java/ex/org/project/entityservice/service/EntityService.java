@@ -3,19 +3,29 @@ package ex.org.project.entityservice.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import ex.org.project.datahub.auth.core.FileAuthorizationService;
+import ex.org.project.datahub.auth.exception.UserAuthorizationException;
+import ex.org.project.datahub.auth.exception.UserNotFoundException;
 import ex.org.project.entityservice.exception.ResourceNotFoundException;
 import ex.org.project.entityservice.exception.custom.StatusNotFoundException;
 import ex.org.project.entityservice.exception.custom.StudyNotFoundException;
-import ex.org.project.entityservice.mapper.*;
-import ex.org.project.entityservice.model.*;
+import ex.org.project.entityservice.mapper.DataFileMapper;
+import ex.org.project.entityservice.mapper.EntityDTOMapper;
+import ex.org.project.entityservice.mapper.EntityPropertyMapper;
+import ex.org.project.entityservice.mapper.StudyDocumentMapper;
 import ex.org.project.entityservice.model.DTO.*;
+import ex.org.project.entityservice.model.*;
 import ex.org.project.entityservice.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static ex.org.project.entityservice.util.Constants.*;
-
-import lombok.RequiredArgsConstructor;
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 

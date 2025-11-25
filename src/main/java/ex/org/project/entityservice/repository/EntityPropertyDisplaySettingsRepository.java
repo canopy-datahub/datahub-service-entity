@@ -1,12 +1,11 @@
 package ex.org.project.entityservice.repository;
 
-import java.util.List;
-
+import ex.org.project.entityservice.model.EntityPropertyDisplaySettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import ex.org.project.entityservice.model.EntityPropertyDisplaySettings;
+import java.util.List;
 
     @Repository
     public interface EntityPropertyDisplaySettingsRepository extends JpaRepository<EntityPropertyDisplaySettings, Integer> {

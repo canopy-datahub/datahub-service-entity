@@ -15,8 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
-import ex.org.project.entityservice.service.EntityService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,9 +25,7 @@ public class StudyController {
 
     private final EntityService entityService;
 
-  private final KeycloakAuthenticationService authenticationService;
-
-  private final AuthUserRepository authUserRepository;
+    private final KeycloakAuthenticationService authenticationService;
 
     @GetMapping("/getStudy")
     public ResponseEntity<StudyOverviewDTO> getStudy(
@@ -36,7 +34,12 @@ public class StudyController {
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-          authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            // Unapproved studies require DATA_CURATOR role
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         // Calls the entityService to retrieve study properties
         StudyOverviewDTO study = entityService.getStudyOverview(studyId);
@@ -50,7 +53,12 @@ public class StudyController {
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-          authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            // Unapproved studies require DATA_CURATOR role
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         List<StudyDocumentEntityDTO> displaySettingsMap = entityService.getStudyDocuments(studyId);
         return ResponseEntity.ok(displaySettingsMap);
@@ -65,7 +73,11 @@ public class StudyController {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         //if study is not approved, only data curators should have access to datasets
         if(!isApprovedStudy) {
-          authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            if (jwt != null) {
+                authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            } else {
+                throw new UserAuthenticationException("Authentication required for unapproved studies");
+            }
         }
         try {
             //checks if the user is valid to access datasets
@@ -73,7 +85,7 @@ public class StudyController {
             return new ResponseEntity<>(entityService.getDatasets(studyId, userId), HttpStatus.OK);
         }
         catch(UserAuthenticationException | UserNotFoundException e) {
-            //If sessionId not provided or user does not have valid access to datasets, return approved datasets
+            //If JWT not provided or user does not have valid access to datasets, return approved datasets
             return new ResponseEntity<>(entityService.getDatasets(studyId), HttpStatus.OK);
         }
     }

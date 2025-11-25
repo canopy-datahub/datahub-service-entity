@@ -1,16 +1,15 @@
 package ex.org.project.entityservice.mapper;
 
-import java.util.Arrays;
-import java.util.List;
-
+import ex.org.project.entityservice.model.DTO.EntityDTO;
 import ex.org.project.entityservice.model.DTO.PropsDTO;
+import ex.org.project.entityservice.model.EntityPropertyDisplaySettings;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import ex.org.project.entityservice.model.EntityPropertyDisplaySettings;
-import ex.org.project.entityservice.model.DTO.EntityDTO;
+import java.util.Arrays;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EntityDTOMapper {

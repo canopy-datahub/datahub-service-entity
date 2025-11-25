@@ -1,7 +1,6 @@
 package ex.org.project.entityservice.repository;
 
 import ex.org.project.entityservice.model.DataFile;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

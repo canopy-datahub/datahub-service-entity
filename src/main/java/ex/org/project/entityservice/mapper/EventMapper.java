@@ -1,15 +1,14 @@
 package ex.org.project.entityservice.mapper;
 
-import java.util.List;
-
+import ex.org.project.entityservice.model.DTO.EventDTO;
+import ex.org.project.entityservice.model.Event;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import ex.org.project.entityservice.model.Event;
-import ex.org.project.entityservice.model.DTO.EventDTO;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {

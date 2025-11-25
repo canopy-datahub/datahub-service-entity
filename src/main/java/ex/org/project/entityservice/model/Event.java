@@ -1,23 +1,13 @@
 package ex.org.project.entityservice.model;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import jakarta.persistence.*;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -47,7 +37,7 @@ public class Event {
 
     @Column(name = "event_date", nullable = false)
     private LocalDateTime eventDate;
-    
+
     @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
@@ -65,7 +55,7 @@ public class Event {
     @LastModifiedBy
     @Column(name = "modified_by")
     private Integer modifiedBy;
-    
+
     @OneToMany(mappedBy="event", fetch = FetchType.EAGER)
     private List<EventLink> links;
 }

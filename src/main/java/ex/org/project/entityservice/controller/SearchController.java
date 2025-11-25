@@ -1,14 +1,11 @@
 package ex.org.project.entityservice.controller;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import ex.org.project.entityservice.model.DTO.EntityDTO;
 import ex.org.project.entityservice.model.DTO.PropsDTO;
 import ex.org.project.entityservice.model.DTO.VariableDTO;
+import ex.org.project.entityservice.service.EntityService;
 import ex.org.project.entityservice.service.VariableService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ex.org.project.entityservice.model.DTO.EntityDTO;
-import ex.org.project.entityservice.service.EntityService;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/search")
@@ -43,7 +41,7 @@ public class SearchController {
     }
 
 	@GetMapping("/variables")
-	public ResponseEntity<List<VariableDTO>> getVariables(@RequestParam Optional<Integer> studyId) {		
+	public ResponseEntity<List<VariableDTO>> getVariables(@RequestParam Optional<Integer> studyId) {
 		if (studyId.isEmpty()) {
 			return ResponseEntity.ok(variableService.getAllVariables());
 		} else {

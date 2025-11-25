@@ -39,11 +39,11 @@ public class VariableService {
         // Look up the variable name using the variable_id
         Variable variable = variableRepository.findById(variableId)
             .orElseThrow(() -> new RuntimeException("Variable not found with id: " + variableId));
-        
+
         // Use the variable name to search in permissibleValueRepository
         List<VariablePermissibleValue> permissibleValues = permissibleValueRepository
             .findByVariableNameOrderByValue(variable.getName());
-        
+
         return variableMapper.mapToDtoList(permissibleValues);
     }
 
@@ -56,7 +56,7 @@ public class VariableService {
         List<Variable> variables = variableRepository.findAll();
         return variables.stream().map(VariableDTO::new).toList();
     }
-    
+
     public List<VariableDTO> getVariables(Integer studyId) {
         List<StudyVariable> variables = studyEntityRepository.findAllVariablesByStudyId(studyId);
         return variables.stream().map(VariableDTO::new).toList();
