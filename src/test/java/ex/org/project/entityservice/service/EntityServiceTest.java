@@ -1,6 +1,6 @@
 package ex.org.project.entityservice.service;
 
-import ex.org.project.entityservice.auth.UserAuthService;
+import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
 import ex.org.project.entityservice.exception.ResourceNotFoundException;
 import ex.org.project.entityservice.mapper.*;
 
@@ -75,7 +75,7 @@ class EntityServiceTest {
     private EntityService entityService;
 
     @InjectMocks
-    private UserAuthService userAuthService;
+    private KeycloakAuthenticationService authenticationService;
 
     @BeforeEach
     public void setup() {
@@ -84,7 +84,7 @@ class EntityServiceTest {
         entityService = new EntityService(entityPropertyDisplaySettingsRepository, codelistValueRepository,
                                           propertySourceRepository, entityPropertyRepository, dataFileRepository,
                                           studyRepository, statusRepository, dataFileMapper, entityDTOMapper,
-                                          documentMapper, entityPropertyMapper, userAuthService, propertyValueService,
+                                          documentMapper, entityPropertyMapper, propertyValueService,
                                           studyEntityRepository
         );
     }
