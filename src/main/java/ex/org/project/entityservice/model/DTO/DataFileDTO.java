@@ -1,6 +1,7 @@
 package ex.org.project.entityservice.model.DTO;
 
 public record DataFileDTO(
+    Integer dataFileId,
     String sourceFileName,
     String normalizedFileName,
     Integer dictionaryFileId,

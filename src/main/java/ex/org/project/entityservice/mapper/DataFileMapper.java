@@ -17,6 +17,7 @@ public interface DataFileMapper {
     @Mapping(source = "dataFile.fileHeaders", target = "dataVariables")
     @Mapping(source = "dataFile.variablesCount", target="totalVariables")
     @Mapping(source = "dataFile.sampleSize", target = "sampleSize")
+    @Mapping(source = "dataFile.id", target = "dataFileId")
     @Mapping(source = "dataFile.metadataFile.id", target = "metadataFileId")
     @Mapping(source = "dataFile.metadataFile.fileSize", target = "metadataFileSize")
     @Mapping(source = "dataFile.metadataFile.sourceFileName", target = "metadataFileName")

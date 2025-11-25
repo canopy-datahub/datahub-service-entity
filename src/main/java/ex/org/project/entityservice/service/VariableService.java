@@ -35,8 +35,14 @@ public class VariableService {
     private final StudyEntityRepository studyEntityRepository;
 
     public List<PermissibleValueDTO> getPermissibleValues(Integer variableId) {
-        List<VariablePermissibleValue> permissibleValues = permissibleValueRepository.findByVariableIdOrderByValue(
-            variableId);
+        // Look up the variable name using the variable_id
+        Variable variable = variableRepository.findById(variableId)
+            .orElseThrow(() -> new RuntimeException("Variable not found with id: " + variableId));
+        
+        // Use the variable name to search in permissibleValueRepository
+        List<VariablePermissibleValue> permissibleValues = permissibleValueRepository
+            .findByVariableNameOrderByValue(variable.getName());
+        
         return variableMapper.mapToDtoList(permissibleValues);
     }
 

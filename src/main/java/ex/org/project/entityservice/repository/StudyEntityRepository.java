@@ -10,9 +10,9 @@ import java.util.List;
 public interface StudyEntityRepository extends JpaRepository<Study, Integer> {
 
     @Query(nativeQuery = true, value =
-                                   "select vsv.study_id as studyId, vsv.study_phs as studyPhs, vsv.variable_id as variableId, " +
-                                   "vsv.variable as variable, vsv.is_tier1_variable as isTier1Variable, vsv.variable_label as variableLabel " +
-                                   "from public.view_study_variables vsv where study_id = :studyId")
+                                   "select vv.study_id as studyId, vv.variable_id as variableId, " +
+                                   "vv.variable as variable, vv.is_tier1_variable as isTier1Variable, vv.variable_label as variableLabel " +
+                                   "from public.view_variables vv where study_id = :studyId")
     List<StudyVariable> findAllVariablesByStudyId(Integer studyId);
 
 }

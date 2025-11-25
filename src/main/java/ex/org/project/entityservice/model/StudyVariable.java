@@ -5,8 +5,6 @@ public interface StudyVariable {
 
     Integer getStudyId();
 
-    String getStudyPhs();
-
     Integer getVariableId();
 
     String getVariable();

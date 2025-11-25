@@ -136,11 +136,11 @@ class StudyControllerTest {
     @Test
     void testGetDatasets() {
         // Mock data
-        DataFileDTO testDTO = new DataFileDTO("sourceFile", "normalizedFile", 3, 4, "csv", 12345L, "Document", 12, 15,
+        DataFileDTO testDTO = new DataFileDTO(1, "sourceFile", "normalizedFile", 3, 4, "csv", 12345L, "Document", 12, 15,
                                               "record_id;f_name;l_name;race;ethnicity;dob;age;sex;education;zip;employment",
                                               0, "metadatafileName", 0, 1
         );
-        DataFileDTO testDTO2 = new DataFileDTO("sourceFile", "normalizedFile", 1, 2, "csv", 12345L, "Document", 12, 15,
+        DataFileDTO testDTO2 = new DataFileDTO(2, "sourceFile", "normalizedFile", 1, 2, "csv", 12345L, "Document", 12, 15,
                                                "record_id;f_name;l_name;race;ethnicity;dob;age;sex;education;zip;employment",
                                                0, "metadatafileName", 0, 1
         );

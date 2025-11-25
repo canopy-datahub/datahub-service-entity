@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface VariablePermissibleValueRepository extends JpaRepository<VariablePermissibleValue, Integer> {
-
-    List<VariablePermissibleValue> findByVariableIdOrderByValue(Integer variableId);
-
+    
+    List<VariablePermissibleValue> findByVariableNameOrderByValue(String variableName);
 }
