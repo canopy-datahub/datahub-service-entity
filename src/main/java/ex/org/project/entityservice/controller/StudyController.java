@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
+import ex.org.project.datahub.auth.repository.AuthUserRepository;
 import ex.org.project.datahub.auth.model.AccessRole;
 import ex.org.project.datahub.auth.exception.UserAuthenticationException;
 import ex.org.project.datahub.auth.exception.UserNotFoundException;
@@ -25,6 +26,8 @@ public class StudyController {
     private final EntityService entityService;
 
   private final KeycloakAuthenticationService authenticationService;
+
+  private final AuthUserRepository authUserRepository;
 
     @GetMapping("/getStudy")
     public ResponseEntity<StudyOverviewDTO> getStudy(
