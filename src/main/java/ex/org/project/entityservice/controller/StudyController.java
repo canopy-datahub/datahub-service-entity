@@ -9,6 +9,8 @@ import ex.org.project.datahub.auth.model.AccessRole;
 import ex.org.project.datahub.auth.exception.UserAuthenticationException;
 import ex.org.project.datahub.auth.exception.UserNotFoundException;
 import ex.org.project.entityservice.model.DTO.*;
+import ex.org.project.entityservice.service.EntityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
