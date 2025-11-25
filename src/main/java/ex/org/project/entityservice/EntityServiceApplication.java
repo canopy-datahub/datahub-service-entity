@@ -10,18 +10,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication(proxyBeanMethods = false)
-@ComponentScan(basePackages = {
-    "ex.org.project.entityservice",
-    "ex.org.project.datahub.auth"
-})
-@EnableJpaAuditing
 @EnableJpaRepositories(basePackages = {
     "ex.org.project.entityservice.repository",  // Entity service repositories
-    "ex.org.project.datahub.auth.repository"    // Keycloak library repositories
+    "ex.org.project.datahub.auth.repository"        // Keycloak library repositories
 })
 @EntityScan(basePackages = {
-    "ex.org.project.entityservice.model",       // Entity service entities
-    "ex.org.project.datahub.auth.model"         // Keycloak library entities
+    "ex.org.project.entityservice.model",      // Entity service entities
+    "ex.org.project.datahub.auth.model"             // Keycloak library entities
 })
 public class EntityServiceApplication {
 

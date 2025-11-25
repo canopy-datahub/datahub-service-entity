@@ -1,5 +1,8 @@
 package ex.org.project.entityservice.service;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 import ex.org.project.datahub.auth.core.FileAuthorizationService;
 import ex.org.project.datahub.auth.exception.UserAuthorizationException;
 import ex.org.project.datahub.auth.exception.UserNotFoundException;
@@ -51,8 +54,6 @@ public class EntityService {
     private final StudyDocumentMapper documentMapper;
 
     private final EntityPropertyMapper entityPropertyMapper;
-
-    private final FileAuthorizationService fileAuthorizationService;
 
     private final PropertyValueService propertyValueService;
 
@@ -130,14 +131,15 @@ public class EntityService {
             studyId, CATEGORY_DATA, STATUS_APPROVED);
         files.forEach(this::checkIfSasAvailable);
         DatasetDTO datasetDTO = new DatasetDTO();
-        //fileAuthorizationService.checkStudyAuthorization checks if user has been granted access to the study
-        try {
-            datasetDTO.setUserHasStudyAccess(fileAuthorizationService.checkStudyAuthorization(userId, studyId));
-            //if a UserAuthorizationException is thrown, user does not have valid authorizations for study.
-        }
-        catch(UserAuthorizationException | UserNotFoundException e) {
-            datasetDTO.setUserHasStudyAccess(false);
-        }
+        //userAuthService.checkStudyAuthorization checks is user has been granted access to the study
+        // DataSets are open for now
+//        try {
+//            datasetDTO.setUserHasStudyAccess(userAuthService.checkStudyAuthorization(userId, studyId));
+//            //if a UserAuthorizationException is thrown, user does not have valid authorizations for study.
+//        }
+//        catch(UserAuthorizationException | UserNotFoundException e) {
+//            datasetDTO.setUserHasStudyAccess(false);
+//        }
         datasetDTO.setDataFileDTOS(dataFileMapper.dataFileListToDtoList(files));
         return datasetDTO;
     }

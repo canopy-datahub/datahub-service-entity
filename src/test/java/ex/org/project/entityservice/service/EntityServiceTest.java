@@ -1,5 +1,7 @@
 package ex.org.project.entityservice.service;
 
+import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
+import ex.org.project.entityservice.exception.ResourceNotFoundException;
 import ex.org.project.datahub.auth.core.FileAuthorizationService;
 import ex.org.project.entityservice.mapper.*;
 import ex.org.project.entityservice.model.DTO.PropsDTO;

@@ -1,5 +1,20 @@
 package ex.org.project.entityservice.controller;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ex.org.project.datahub.auth.model.AccessRole;
+import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
+import ex.org.project.datahub.auth.exception.UserAuthorizationException;
+import org.springframework.security.oauth2.jwt.Jwt;
 import ex.org.project.datahub.auth.core.KeycloakAuthenticationService;
 import ex.org.project.datahub.auth.exception.UserAuthorizationException;
 import ex.org.project.datahub.auth.model.AccessRole;
