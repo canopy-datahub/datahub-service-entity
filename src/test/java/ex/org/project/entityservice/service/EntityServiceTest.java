@@ -86,7 +86,7 @@ class EntityServiceTest {
         entityService = new EntityService(entityPropertyDisplaySettingsRepository, codelistValueRepository,
                                           propertySourceRepository, entityPropertyRepository, dataFileRepository,
                                           studyRepository, statusRepository, dataFileMapper, entityDTOMapper,
-                                          documentMapper, entityPropertyMapper, fileAuthorizationService, propertyValueService,
+                                          documentMapper, entityPropertyMapper, propertyValueService,
                                           studyEntityRepository
         );
     }
