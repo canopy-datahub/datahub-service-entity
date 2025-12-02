@@ -133,7 +133,7 @@ public class UserAuthService {
         Set<String> authorizedStudies = userRasList.stream()
                 .map(AuthUserRas::getPhs)
                 .collect(Collectors.toSet());
-        List<String> phsNumbers = authUtilRepository.findPhsNumbersOfFilesIn(fileIds);
+        List<String> phsNumbers = authUtilRepository.findStudyIdNumbersOfFilesIn(fileIds);
         Set<String> unauthorizedStudies = phsNumbers.stream()
                 .filter(Predicate.not(authorizedStudies::contains))
                 .collect(Collectors.toSet());
@@ -156,7 +156,7 @@ public class UserAuthService {
         Set<String> authorizedStudies = userRasList.stream()
                 .map(AuthUserRas::getPhs)
                 .collect(Collectors.toSet());
-        String phsNumber = authUtilRepository.findPhsNumberOfStudy(studyId);
+        String phsNumber = authUtilRepository.findStudyIdOfStudy(studyId);
         if(authorizedStudies.isEmpty()){
             log.warn("User attempted access with invalid study authorization; User ID: " + userId);
             throw new UserAuthorizationException("User does not have access to study: " + phsNumber);
