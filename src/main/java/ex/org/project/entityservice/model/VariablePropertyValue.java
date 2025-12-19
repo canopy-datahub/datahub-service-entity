@@ -12,7 +12,7 @@ import lombok.Data;
 public class VariablePropertyValue extends PropertyValue {
 
     @Id
-    @Column(name = "variable_property_value_id")
+    @Column(name = "lkup_core_variable_property_value_id")
     private Long id;
 
     @Column(name = "variable_id")
