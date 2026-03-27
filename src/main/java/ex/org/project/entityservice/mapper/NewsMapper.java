@@ -40,7 +40,13 @@ public interface NewsMapper {
     @Named("splitNewsDescription")
     static String splitNewsDescription(String sourceDescription){
     	String[] result = sourceDescription.split("\\|\\|\\|");    	
-        return result.length > 2 ? result[0] + result[1].trim() + "..." : result[0] + result[1].trim();
+        if (result.length > 2) {
+            return result[0] + result[1].trim() + "...";
+        } else if (result.length > 1) {
+            return result[0] + result[1].trim();
+        } else {
+            return result[0].trim();
+        }
     }
     
     // Individual news item page

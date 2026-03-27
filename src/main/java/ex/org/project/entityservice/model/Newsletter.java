@@ -40,9 +40,9 @@ public class Newsletter {
     private Integer createdBy;
 
     @Column(name = "modified_at")
-    private LocalDate modifiedAt;
+    private Instant modifiedAt;
 
     @Column(name = "modified_by")
-    private LocalDate modifiedBy;
+    private Integer modifiedBy;
 
 }
