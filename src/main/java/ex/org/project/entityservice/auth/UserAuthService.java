@@ -29,46 +29,46 @@ public class UserAuthService {
      * @param sessionId session ID provided in an API request to be validated
      * @return object containing user data needed for validation
      */
-    private AuthUserDTO getUserInfoBySession(String sessionId) {
-        if(sessionId == null || sessionId.isEmpty()){
-            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
-            log.info(errorMessage);
-            throw new UserAuthenticationException(errorMessage);
-        }
-        Optional<AuthRasTracking> rasUserOpt = authRasTrackingRepository.findBySessionId(sessionId);
-        if(rasUserOpt.isEmpty()){
-            String errorMessage = "Unable to find valid session: " + sessionId;
-            log.info(errorMessage);
-            throw new UserAuthenticationException(errorMessage);
-        }else {
-            try{
-                authRasService.getRasUserInfo(rasUserOpt.get().getAccessToken());
-            }catch(HttpClientErrorException ex){
-                try {
-                    authRasService.processRefreshToken(sessionId);
-                }catch (HttpClientErrorException e) {
-                    String errorMessage = "Unable to find valid session: " + sessionId;
-                    log.info(errorMessage);
-                    throw new UserAuthenticationException(errorMessage);
-                }
-            }
-        }
-        AuthRasTracking rasUser = rasUserOpt.get();
-
-        if (rasUser.getEmail() != null) {
-            Optional<AuthUser> userOpt = authUserRepository.findByEmail(rasUser.getEmail());
-            if(userOpt.isEmpty()){
-                String errorMessage = "Unable to find user with email address: " + rasUser.getEmail();
-                log.error(errorMessage);
-                throw new UserNotFoundException(errorMessage);
-            }
-            return authUserMapper.toAuthUserDto(userOpt.get(), sessionId);
-        } else {
-            String errorMessage = "Unable to find user email address for session: " + sessionId;
-            log.error(errorMessage);
-            throw new UserNotFoundException(errorMessage);
-        }
-    }
+//    private AuthUserDTO getUserInfoBySession(String sessionId) {
+//        if(sessionId == null || sessionId.isEmpty()){
+//            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
+//            log.info(errorMessage);
+//            throw new UserAuthenticationException(errorMessage);
+//        }
+//        Optional<AuthRasTracking> rasUserOpt = authRasTrackingRepository.findBySessionId(sessionId);
+//        if(rasUserOpt.isEmpty()){
+//            String errorMessage = "Unable to find valid session: " + sessionId;
+//            log.info(errorMessage);
+//            throw new UserAuthenticationException(errorMessage);
+//        }else {
+//            try{
+//                authRasService.getRasUserInfo(rasUserOpt.get().getAccessToken());
+//            }catch(HttpClientErrorException ex){
+//                try {
+//                    authRasService.processRefreshToken(sessionId);
+//                }catch (HttpClientErrorException e) {
+//                    String errorMessage = "Unable to find valid session: " + sessionId;
+//                    log.info(errorMessage);
+//                    throw new UserAuthenticationException(errorMessage);
+//                }
+//            }
+//        }
+//        AuthRasTracking rasUser = rasUserOpt.get();
+//
+//        if (rasUser.getEmail() != null) {
+//            Optional<AuthUser> userOpt = authUserRepository.findByEmail(rasUser.getEmail());
+//            if(userOpt.isEmpty()){
+//                String errorMessage = "Unable to find user with email address: " + rasUser.getEmail();
+//                log.error(errorMessage);
+//                throw new UserNotFoundException(errorMessage);
+//            }
+//            return authUserMapper.toAuthUserDto(userOpt.get(), sessionId);
+//        } else {
+//            String errorMessage = "Unable to find user email address for session: " + sessionId;
+//            log.error(errorMessage);
+//            throw new UserNotFoundException(errorMessage);
+//        }
+//    }
 
     /**
      * Checks if a user has valid authorization and authentication
@@ -76,46 +76,46 @@ public class UserAuthService {
      * @param authorizedRoles list of access roles that are authorized to use the endpoint
      * @return user ID associated with the provided session ID
      */
-    public Integer checkAuth(String sessionId, List<AccessRole> authorizedRoles) throws UserAuthenticationException, UserAuthorizationException{
-//        if(sessionId == null || sessionId.isEmpty()){
-//            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
-//            log.info(errorMessage);
-//            throw new UserAuthenticationException(errorMessage);
-//        }
-//        AuthUserDTO authUserDTO = getUserInfoBySession(sessionId);
-//        //default research role
-//        if(authorizedRoles.isEmpty()){
-//            return authUserDTO.id();
-//        }
-//        List<AccessRole> userRoles = authUserDTO.roles().stream()
-//                .map(AccessRole::valueOfLabel)
-//                .toList();
-//        log.debug(userRoles.toString());
-//        //specific role
-//        for (AccessRole role : authorizedRoles){
-//            if(userRoles.contains(role) ){
-//                return authUserDTO.id();
-//            }
-//        }
-//        log.warn("User attempted access with invalid role authorization; Session: " + sessionId);
-//        throw new UserAuthorizationException("User does not have the necessary role for access");
-        return 3;
-    }
+//    public Integer checkAuth(String sessionId, List<AccessRole> authorizedRoles) throws UserAuthenticationException, UserAuthorizationException{
+////        if(sessionId == null || sessionId.isEmpty()){
+////            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
+////            log.info(errorMessage);
+////            throw new UserAuthenticationException(errorMessage);
+////        }
+////        AuthUserDTO authUserDTO = getUserInfoBySession(sessionId);
+////        //default research role
+////        if(authorizedRoles.isEmpty()){
+////            return authUserDTO.id();
+////        }
+////        List<AccessRole> userRoles = authUserDTO.roles().stream()
+////                .map(AccessRole::valueOfLabel)
+////                .toList();
+////        log.debug(userRoles.toString());
+////        //specific role
+////        for (AccessRole role : authorizedRoles){
+////            if(userRoles.contains(role) ){
+////                return authUserDTO.id();
+////            }
+////        }
+////        log.warn("User attempted access with invalid role authorization; Session: " + sessionId);
+////        throw new UserAuthorizationException("User does not have the necessary role for access");
+//        return 3;
+//    }
 
     /**
      * Checks if a user has valid authentication
      * @param sessionId session ID provided in an API request to be validated
      * @return user ID associated with the provided session ID
      */
-    public Integer checkAuth(String sessionId) throws UserAuthenticationException{
-        if(sessionId == null || sessionId.isEmpty()){
-            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
-            log.info(errorMessage);
-            throw new UserAuthenticationException(errorMessage);
-        }
-        AuthUserDTO authUserDTO = getUserInfoBySession(sessionId);
-        return authUserDTO.id();
-    }
+//    public Integer checkAuth(String sessionId) throws UserAuthenticationException{
+//        if(sessionId == null || sessionId.isEmpty()){
+//            String errorMessage = "Cookie 'chocolateChip' is not present. Unable to find valid session.";
+//            log.info(errorMessage);
+//            throw new UserAuthenticationException(errorMessage);
+//        }
+//        AuthUserDTO authUserDTO = getUserInfoBySession(sessionId);
+//        return authUserDTO.id();
+//    }
 
     /**
      * Checks if a user has authorization to a list of files
