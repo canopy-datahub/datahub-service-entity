@@ -1,6 +1,6 @@
 # Entity Service
 
-Spring Boot 3.1 microservice for Data Hub 3.0. It is running on Java 17.
+Spring Boot 3.1 microservice for Canopy. It is running on Java 17.
 
 Entity Service primarily handles the direct retrieval of database entities that do not require a complex workflow process. Examples include:
 * Study properties
@@ -20,10 +20,10 @@ Entity Service primarily handles the direct retrieval of database entities that 
 
 If running a cloud configuration locally, AWS CLI needs to be installed and configured.
 
-There are a few environment variables that need to be set in AWS Secrets Manager. 
+There are a few environment variables that need to be set in AWS Secrets Manager.
 These variables can also be set to run without AWS locally:
 * dbuser
-    * Open Search hostname / url
+    * database username
 * password
     * database password for dbuser
 * host
