@@ -48,10 +48,12 @@ public class DataFile {
     private LkupStatus status;
     @Column(name = "s3_file_id")
     private Integer s3FileId;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "dictionary_file_id")
     private DataFile dictionaryFile;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "metadata_file_id")
     private DataFile metadataFile;
     @Column(name = "comments")
