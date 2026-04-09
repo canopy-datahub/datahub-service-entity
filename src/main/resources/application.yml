@@ -1,0 +1,104 @@
+# Spring Boot configuration
+spring:
+
+  # DataSource Configuration
+  cloud.aws.region.auto: true
+
+  # JPA properties
+  jpa:
+    hibernate.ddl-auto: none
+    show-sql: false
+    open-in-view: false
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/entity/v1
+
+database:
+  db-user: ${dbuser}
+  db-password: ${password}
+  host: ${host}
+  port: ${port}
+  db-name: ${dbname}
+
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: never
+    shutdown:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health,shutdown
+
+# Logger configuration
+logging:
+  level:
+    root: warn
+    entityservice:
+      EntityServiceApplication: info
+    org.springframework.web.servlet:
+      DispatcherServlet: trace
+      mvc.method.annotation:
+        HttpEntityMethodProcessor: trace
+
+# RAS configuration
+ras:
+  url: ${rasurl}
+  client:
+    id: ${rasclientid}
+    secret: ${rasclientsecret}
+
+---
+# DEV
+
+spring:
+  config:
+    import: aws-secretsmanager:${AWS_SECRET_NAME}
+    activate:
+      on-profile: dev
+  jpa:
+    show-sql: true
+  security:
+    user:
+      name: ${DATAHUB_SPRING_MANAGEMENT_USER}
+      password: ${DATAHUB_SPRING_MANAGEMENT_PASSWORD}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  pattern:
+    console: "[%boldMagenta(ENTITY)] [%boldGreen(DEV)] %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([%5p]) --- [%cyan(%15.15t)] %-40.40logger{1.} %boldYellow(::) %m%n%wEx"
+
+---
+# TEST
+
+spring:
+  config:
+    import: aws-secretsmanager:${AWS_SECRET_NAME}
+    activate:
+      on-profile: test
+
+logging:
+  pattern:
+    console: "[%boldMagenta(ENTITY)] [%boldGreen(TEST)] %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([%5p]) --- [%cyan(%15.15t)] %-40.40logger{1.} %boldYellow(::) %m%n%wEx"
+
+---
+# PROD
+
+spring:
+  config:
+    import: aws-secretsmanager:${AWS_SECRET_NAME}
+    activate:
+      on-profile: prod
+
+logging:
+  pattern:
+    console: "[%boldMagenta(ENTITY)] [%boldGreen(PROD)] %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([%5p]) --- [%cyan(%15.15t)] %-40.40logger{1.} %boldYellow(::) %m%n%wEx"

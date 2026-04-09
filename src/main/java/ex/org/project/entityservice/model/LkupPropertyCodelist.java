@@ -1,0 +1,20 @@
+package ex.org.project.entityservice.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "lkup_property_codelist")
+public class LkupPropertyCodelist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    private String name;
+
+    private String description;
+}
