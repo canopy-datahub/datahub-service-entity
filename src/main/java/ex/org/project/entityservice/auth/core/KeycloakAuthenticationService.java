@@ -57,6 +57,9 @@ public class KeycloakAuthenticationService {
      * @throws UserNotFoundException if user not found in database
      */
     public AuthUser getAuthenticatedUser(Jwt jwt) {
+        if (jwt == null) {
+            throw new UserAuthenticationException("Authentication token is missing or invalid");
+        }
         String email = keycloakJwtService.extractEmail(jwt);
         log.debug("Authenticating user with email: {}", email);
 
