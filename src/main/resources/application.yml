@@ -10,8 +10,16 @@ spring:
     show-sql: false
     open-in-view: false
 
+  # OAuth2 JWT configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${DATAHUB_KEYCLOAK_ISSUER_URI}
+          jwk-set-uri: ${DATAHUB_KEYCLOAK_JWK_SET_URI}
+
 server:
-  port: 8080
+  port: 8087
   servlet:
     context-path: /api/entity/v1
 
