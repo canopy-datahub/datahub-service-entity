@@ -34,10 +34,10 @@ class StudyControllerTest {
     @Mock
     private EntityService entityService;
 
-
+    @Mock
     private KeycloakAuthenticationService authenticationService;
 
-  @InjectMocks
+    @InjectMocks
     private StudyController studyController;
 
     @Test
