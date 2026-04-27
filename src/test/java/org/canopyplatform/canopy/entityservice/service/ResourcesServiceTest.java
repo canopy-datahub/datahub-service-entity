@@ -322,7 +322,7 @@ public class ResourcesServiceTest {
         List<Map<String, Object>> newFileList = new ArrayList<>();
         Map<String, Object> newFileMap = new HashMap<>();
         newFileMap.put("files", 1L);
-        newFileMap.put("dcc", "newFileDcc");
+        newFileMap.put("center", "newFileDcc");
         newFileMap.put("study_id", 2);
         newFileMap.put("title", "newFileStudyName");
         newFileMap.put("date", Timestamp.valueOf("2023-01-16 00:00:00.0"));
@@ -334,7 +334,7 @@ public class ResourcesServiceTest {
         List<Map<String, Object>> newFileList = new ArrayList<>();
         Map<String, Object> newFileMap = new HashMap<>();
         newFileMap.put("files", 3L);
-        newFileMap.put("dcc", "updatedFileDcc");
+        newFileMap.put("center", "updatedFileDcc");
         newFileMap.put("study_id", 4);
         newFileMap.put("title", "updatedFileStudyName");
         newFileMap.put("date", Timestamp.valueOf("2023-01-17 00:00:00.0"));
