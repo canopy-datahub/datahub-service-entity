@@ -54,13 +54,6 @@ logging:
       mvc.method.annotation:
         HttpEntityMethodProcessor: trace
 
-# RAS configuration
-ras:
-  url: ${rasurl}
-  client:
-    id: ${rasclientid}
-    secret: ${rasclientsecret}
-
 ---
 # DEV
 

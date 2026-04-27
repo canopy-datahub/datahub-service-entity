@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.canopyplatform.canopy.entityservice.auth.AccessRole;
-import org.canopyplatform.canopy.entityservice.auth.UserAuthService;
 import org.canopyplatform.canopy.entityservice.auth.UserAuthorizationException;
 import org.canopyplatform.canopy.entityservice.auth.core.KeycloakAuthenticationService;
 import org.canopyplatform.canopy.entityservice.exception.custom.StudyNotFoundException;
@@ -35,8 +34,6 @@ class StudyControllerTest {
     @Mock
     private EntityService entityService;
 
-    @Mock
-    private UserAuthService authService;
 
     private KeycloakAuthenticationService authenticationService;
 
@@ -49,7 +46,6 @@ class StudyControllerTest {
         Jwt jwt = mock(Jwt.class);
         StudyOverviewDTO studyOverviewDTO = new StudyOverviewDTO();
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
         when(authenticationService.checkAuth(eq(jwt), any())).thenReturn(any());
         when(entityService.getStudyOverview(1)).thenReturn(studyOverviewDTO);
         ResponseEntity<StudyOverviewDTO> result = studyController.getStudy(jwt, studyId);
@@ -62,7 +58,6 @@ class StudyControllerTest {
         Integer studyId = 1;
         Jwt jwt = mock(Jwt.class);
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
         when(entityService.isApprovedStudy(studyId)).thenReturn(false);
         when(authenticationService.checkAuth(eq(jwt), eq(List.of(AccessRole.DATA_CURATOR)))).thenThrow(
             new UserAuthorizationException("User does not have the necessary role for access"));
@@ -76,7 +71,6 @@ class StudyControllerTest {
         Integer studyId = null;
         Jwt jwt = mock(Jwt.class);
 
-        // Mock the authService.checkAuth and entityService.getStudyProps() methods
         when(authenticationService.checkAuth(eq(jwt), any())).thenReturn(any());
         when(entityService.getStudyOverview(null)).thenThrow(
             new StudyNotFoundException("No study found with ID: " + studyId));

@@ -1,6 +1,5 @@
 package org.canopyplatform.canopy.entityservice.service;
 
-import org.canopyplatform.canopy.entityservice.auth.UserAuthService;
 import org.canopyplatform.canopy.entityservice.mapper.*;
 
 import org.canopyplatform.canopy.entityservice.model.*;
@@ -76,8 +75,6 @@ class EntityServiceTest {
     @InjectMocks
     private EntityService entityService;
 
-    @InjectMocks
-    private UserAuthService userAuthService;
 
     @BeforeEach
     public void setup() {
@@ -86,7 +83,7 @@ class EntityServiceTest {
         entityService = new EntityService(entityPropertyDisplaySettingsRepository, codelistValueRepository,
                                           propertySourceRepository, entityPropertyRepository, dataFileRepository,
                                           studyRepository, statusRepository, dataFileMapper, entityDTOMapper,
-                                          documentMapper, entityPropertyMapper, userAuthService, propertyValueService,
+                                          documentMapper, entityPropertyMapper, propertyValueService,
                                           studyEntityRepository
         );
     }

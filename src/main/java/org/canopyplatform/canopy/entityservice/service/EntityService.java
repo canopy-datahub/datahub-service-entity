@@ -3,8 +3,6 @@ package org.canopyplatform.canopy.entityservice.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.canopyplatform.canopy.entityservice.auth.UserAuthService;
-import org.canopyplatform.canopy.entityservice.auth.UserAuthorizationException;
 import org.canopyplatform.canopy.entityservice.auth.UserNotFoundException;
 import org.canopyplatform.canopy.entityservice.exception.ResourceNotFoundException;
 import org.canopyplatform.canopy.entityservice.exception.custom.StatusNotFoundException;
@@ -51,8 +49,6 @@ public class EntityService {
     private final StudyDocumentMapper documentMapper;
 
     private final EntityPropertyMapper entityPropertyMapper;
-
-    private final UserAuthService userAuthService;
 
     private final PropertyValueService propertyValueService;
 
@@ -130,14 +126,8 @@ public class EntityService {
             studyId, CATEGORY_DATA, STATUS_APPROVED);
         files.forEach(this::checkIfSasAvailable);
         DatasetDTO datasetDTO = new DatasetDTO();
-        //userAuthService.checkStudyAuthorization checks is user has been granted access to the study
-        try {
-            datasetDTO.setUserHasStudyAccess(userAuthService.checkStudyAuthorization(userId, studyId));
-            //if a UserAuthorizationException is thrown, user does not have valid authorizations for study.
-        }
-        catch(UserAuthorizationException | UserNotFoundException e) {
-            datasetDTO.setUserHasStudyAccess(false);
-        }
+        // TODO: per-study access check removed with RAS — replace with Keycloak-based StudyAccessService check (see ACCESS_CONTROL_DESIGN.md). Defaulting to false until then.
+        datasetDTO.setUserHasStudyAccess(false);
         datasetDTO.setDataFileDTOS(dataFileMapper.dataFileListToDtoList(files));
         return datasetDTO;
     }
