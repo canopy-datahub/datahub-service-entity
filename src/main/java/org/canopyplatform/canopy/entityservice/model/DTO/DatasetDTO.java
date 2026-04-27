@@ -1,0 +1,12 @@
+package org.canopyplatform.canopy.entityservice.model.DTO;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class DatasetDTO {
+    private boolean userHasStudyAccess;
+    List<DataFileDTO> dataFileDTOS;
+
+}
