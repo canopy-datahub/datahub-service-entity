@@ -1,7 +1,6 @@
 package org.canopyplatform.canopy.entityservice.auth.core;
 
 import org.canopyplatform.canopy.entityservice.auth.*;
-import org.canopyplatform.canopy.entityservice.auth.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;

@@ -17,9 +17,6 @@ import org.canopyplatform.canopy.entityservice.mapper.DataFileMapper;
 import org.canopyplatform.canopy.entityservice.mapper.EntityDTOMapper;
 import org.canopyplatform.canopy.entityservice.mapper.EntityPropertyMapper;
 import org.canopyplatform.canopy.entityservice.mapper.StudyDocumentMapper;
-import org.canopyplatform.canopy.entityservice.model.*;
-import org.canopyplatform.canopy.entityservice.model.DTO.*;
-import org.canopyplatform.canopy.entityservice.repository.*;
 import org.springframework.stereotype.Service;
 
 import static org.canopyplatform.canopy.entityservice.util.Constants.*;

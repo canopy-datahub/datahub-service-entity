@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.canopyplatform.canopy.entityservice.model.DTO.*;
-import org.canopyplatform.canopy.entityservice.model.DTO.*;
 import org.canopyplatform.canopy.entityservice.util.Validator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

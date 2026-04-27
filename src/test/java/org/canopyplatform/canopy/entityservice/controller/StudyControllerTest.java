@@ -17,7 +17,6 @@ import org.canopyplatform.canopy.entityservice.auth.UserAuthorizationException;
 import org.canopyplatform.canopy.entityservice.auth.core.KeycloakAuthenticationService;
 import org.canopyplatform.canopy.entityservice.exception.custom.StudyNotFoundException;
 import org.canopyplatform.canopy.entityservice.model.DTO.*;
-import org.canopyplatform.canopy.entityservice.model.DTO.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

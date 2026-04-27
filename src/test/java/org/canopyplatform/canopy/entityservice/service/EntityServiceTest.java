@@ -4,7 +4,6 @@ import org.canopyplatform.canopy.entityservice.auth.UserAuthService;
 import org.canopyplatform.canopy.entityservice.mapper.*;
 
 import org.canopyplatform.canopy.entityservice.model.*;
-import org.canopyplatform.canopy.entityservice.mapper.*;
 import org.canopyplatform.canopy.entityservice.model.DTO.StudyDocumentEntityDTO;
 
 import org.canopyplatform.canopy.entityservice.model.DTO.PropsDTO;
@@ -13,7 +12,6 @@ import org.canopyplatform.canopy.entityservice.model.DataFile;
 import org.canopyplatform.canopy.entityservice.model.EntityPropertyDisplaySettings;
 import org.canopyplatform.canopy.entityservice.model.LkupStatus;
 import org.canopyplatform.canopy.entityservice.model.StudyView;
-import org.canopyplatform.canopy.entityservice.repository.*;
 import org.canopyplatform.canopy.entityservice.util.Constants;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
