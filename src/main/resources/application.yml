@@ -29,6 +29,7 @@ database:
   host: ${host}
   port: ${port}
   db-name: ${dbname}
+  db-driver-class-name: ${dbDriverClassName}
 
 management:
   endpoint:
