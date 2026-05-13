@@ -3,7 +3,6 @@ package org.canopyplatform.canopy.entityservice.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.canopyplatform.canopy.entityservice.auth.AccessRole;
 import org.canopyplatform.canopy.entityservice.auth.UserAuthenticationException;
 import org.canopyplatform.canopy.entityservice.auth.UserNotFoundException;
 import org.canopyplatform.canopy.entityservice.auth.core.KeycloakAuthenticationService;
@@ -38,7 +37,7 @@ public class StudyController {
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-            authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            authenticationService.checkCapability(jwt, "study.unapproved.read");
         }
         // Calls the entityService to retrieve study properties
         StudyOverviewDTO study = entityService.getStudyOverview(studyId);
@@ -52,7 +51,7 @@ public class StudyController {
     ) {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         if(!isApprovedStudy) {
-            authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            authenticationService.checkCapability(jwt, "study.unapproved.read");
         }
         List<StudyDocumentEntityDTO> displaySettingsMap = entityService.getStudyDocuments(studyId);
         return ResponseEntity.ok(displaySettingsMap);
@@ -67,7 +66,7 @@ public class StudyController {
         boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
         //if study is not approved, only data curators should have access to datasets
         if(!isApprovedStudy) {
-            authenticationService.checkAuth(jwt, List.of(AccessRole.DATA_CURATOR));
+            authenticationService.checkCapability(jwt, "study.unapproved.read");
         }
         try {
             //checks if the user is valid to access datasets
