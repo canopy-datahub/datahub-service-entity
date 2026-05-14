@@ -43,6 +43,10 @@ public class Study {
     @Column(name = "modified_by")
     private Integer modifiedBy;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_level", nullable = false)
+    private AccessLevel accessLevel;
+
     @ManyToOne
     @JoinColumn(name = "center_id")
     private LookupCenter centerId;
