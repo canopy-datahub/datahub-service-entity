@@ -8,6 +8,7 @@ import org.canopyplatform.canopy.entityservice.auth.UserNotFoundException;
 import org.canopyplatform.canopy.entityservice.auth.core.KeycloakAuthenticationService;
 import org.canopyplatform.canopy.entityservice.auth.*;
 import org.canopyplatform.canopy.entityservice.model.DTO.*;
+import org.canopyplatform.canopy.entityservice.service.StudyAccessService;
 import org.canopyplatform.canopy.entityservice.model.DTO.DatasetDTO;
 import org.canopyplatform.canopy.entityservice.model.DTO.EntityPropertyDTO;
 import org.canopyplatform.canopy.entityservice.model.DTO.StudyDocumentEntityDTO;
@@ -30,16 +31,17 @@ public class StudyController {
 
     private final KeycloakAuthenticationService authenticationService;
 
+    private final StudyAccessService studyAccessService;
+
     @GetMapping("/getStudy")
     public ResponseEntity<StudyOverviewDTO> getStudy(
         @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
-        boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
-        if(!isApprovedStudy) {
-            authenticationService.checkCapability(jwt, "study.unapproved.read");
-        }
-        // Calls the entityService to retrieve study properties
+        // Read gate is access_level + Creator + role overrides (Curator/Admin
+        // see everything). Approval status is no longer involved here —
+        // status and access_level are orthogonal dimensions.
+        studyAccessService.requireRead(jwt, studyId);
         StudyOverviewDTO study = entityService.getStudyOverview(studyId);
         return ResponseEntity.ok(study);
     }
@@ -49,10 +51,7 @@ public class StudyController {
         @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
-        boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
-        if(!isApprovedStudy) {
-            authenticationService.checkCapability(jwt, "study.unapproved.read");
-        }
+        studyAccessService.requireRead(jwt, studyId);
         List<StudyDocumentEntityDTO> displaySettingsMap = entityService.getStudyDocuments(studyId);
         return ResponseEntity.ok(displaySettingsMap);
     }
@@ -62,19 +61,15 @@ public class StudyController {
         @AuthenticationPrincipal Jwt jwt,
         @RequestParam("studyId") Integer studyId
     ) {
-
-        boolean isApprovedStudy = entityService.isApprovedStudy(studyId);
-        //if study is not approved, only data curators should have access to datasets
-        if(!isApprovedStudy) {
-            authenticationService.checkCapability(jwt, "study.unapproved.read");
-        }
+        studyAccessService.requireRead(jwt, studyId);
         try {
-            //checks if the user is valid to access datasets
+            // checks if the user is valid to access datasets (per-user tracking)
             Integer userId = authenticationService.checkAuth(jwt);
             return new ResponseEntity<>(entityService.getDatasets(studyId, userId), HttpStatus.OK);
         }
         catch(UserAuthenticationException | UserNotFoundException e) {
-            //If sessionId not provided or user does not have valid access to datasets, return approved datasets
+            // Anonymous reads of PUBLIC studies — fall through to the
+            // user-agnostic dataset path.
             return new ResponseEntity<>(entityService.getDatasets(studyId), HttpStatus.OK);
         }
     }
